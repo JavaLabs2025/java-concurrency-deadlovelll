@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.example.programmer.ProgrammerTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2025-09-27T12:24:32.289Z" hostname="Timofeys-MacBook-Air.local" time="30.082">
+  <properties/>
+  <testcase name="testManyProgrammers()" classname="org.example.programmer.ProgrammerTest" time="1.199"/>
+  <testcase name="testTwoProgrammersGrabForks()" classname="org.example.programmer.ProgrammerTest" time="1.415"/>
+  <testcase name="testProgrammerEat()" classname="org.example.programmer.ProgrammerTest" time="2.685"/>
+  <testcase name="testConcurrentProgrammers()" classname="org.example.programmer.ProgrammerTest" time="1.319"/>
+  <testcase name="testForksReturned()" classname="org.example.programmer.ProgrammerTest" time="2.591"/>
+  <testcase name="testFastSwitching()" classname="org.example.programmer.ProgrammerTest" time="7.175"/>
+  <testcase name="testMoreProgrammersThanForks()" classname="org.example.programmer.ProgrammerTest" time="1.302"/>
+  <testcase name="testMissingForks()" classname="org.example.programmer.ProgrammerTest" time="0.001"/>
+  <testcase name="testNoForkDoubleOwnership()" classname="org.example.programmer.ProgrammerTest" time="1.223"/>
+  <testcase name="testZeroMeals()" classname="org.example.programmer.ProgrammerTest" time="0.002"/>
+  <testcase name="testMultipleProgrammers()" classname="org.example.programmer.ProgrammerTest" time="1.102"/>
+  <testcase name="testNoDeadlock()" classname="org.example.programmer.ProgrammerTest" time="1.367"/>
+  <testcase name="testIncrementPortions()" classname="org.example.programmer.ProgrammerTest" time="2.353"/>
+  <testcase name="testNegativeMeals()" classname="org.example.programmer.ProgrammerTest" time="0.001"/>
+  <testcase name="testProgrammerEatMultiplePortions()" classname="org.example.programmer.ProgrammerTest" time="2.794"/>
+  <testcase name="testGetProgId()" classname="org.example.programmer.ProgrammerTest" time="0.001"/>
+  <testcase name="testRepeatedEating()" classname="org.example.programmer.ProgrammerTest" time="2.357"/>
+  <testcase name="testForksConsistencyAfterConcurrentEating()" classname="org.example.programmer.ProgrammerTest" time="1.181"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

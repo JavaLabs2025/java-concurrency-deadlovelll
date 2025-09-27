@@ -1,0 +1,12 @@
+services:
+  homework1:
+    build: .
+    container_name: homework_1_run
+    command: ./gradlew run --no-daemon
+
+  homework1_test:
+    build: .
+    container_name: homework1_test
+    profiles:
+      - homework1_test
+    command: ./gradlew clean test
