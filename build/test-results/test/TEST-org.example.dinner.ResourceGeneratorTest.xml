@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.example.dinner.ResourceGeneratorTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-09-27T12:24:32.285Z" hostname="Timofeys-MacBook-Air.local" time="0.001">
-  <properties/>
-  <testcase name="test_generate_values_not_null()" classname="org.example.dinner.ResourceGeneratorTest" time="0.001"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
