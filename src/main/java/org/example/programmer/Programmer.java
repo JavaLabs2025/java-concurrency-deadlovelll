@@ -45,25 +45,20 @@ public class Programmer extends Thread {
     @Override
     public void run() {
         try {
-            while (true) {
-                if (this.forks.isEmpty()) break;
-                // If no food left - break the loop
-                if (!takeOnePortionIfAvailable()) break;
+            // Trying to eat while food is here
+            while (!forks.isEmpty() && takeOnePortionIfAvailable()) {
                 boolean ate = false;
-                // Loop until programmer eat
+                // Trying while the programmer eat
                 while (!ate) {
-                    // If successfully grabbed forks
-                    // - eat
-                    if (grabForks(this.forks)) {
+                    // If grabbed forks - eat
+                    if (grabForks()) {
                         try {
                             EatDinnder();
                             ate = true;
                         } finally {
-                            // Returning forks back
-                            ReleaseForks(this.forks);
+                            ReleaseForks();
                         }
                     } else {
-                        // Little sleep
                         Thread.sleep(50);
                     }
                 }
@@ -84,12 +79,7 @@ public class Programmer extends Thread {
     public int getProgId(){ return this.id; }
     public int getPortionsEaten(){ return this.portionsEaten; }
 
-    private boolean grabForks(ConcurrentHashMap<Integer, Fork> forks) {
-        // Getting forks from the table
-        Fork fork1 = forks.get(this.forkIdx1);
-        Fork fork2 = forks.get(this.forkIdx2);
-        if (fork1 == null || fork2 == null) return false;
-
+    private boolean grabForks() {
         // Grabbing the forks in ascending order by their id to prevent deadlocks.
         // Deadlock can occur if two threads try to acquire the same two forks in different orders:
         //   - Thread A picks fork 1 then waits for fork 2
@@ -100,19 +90,14 @@ public class Programmer extends Thread {
         // and the larger id second (second). This ensures all threads acquire forks
         // in the same order, eliminating the possibility of circular waiting.
         // p.s: it was the most difficult part of homework.
-        Fork first = forkIdx1 < forkIdx2 ? fork1 : fork2;
-        Fork second = forkIdx1 < forkIdx2 ? fork2 : fork1;
-        // Synchronizing only the shared forks
-        synchronized (first) {
-            synchronized (second) {
-                forks.remove(first.getId());
-                forks.remove(second.getId());
-            }
-        }
-        // Because userForks used only in current thread
-        // no synchronization
-        this.userForks.put(first.getId(), first);
-        this.userForks.put(second.getId(), second);
+        Fork first = forkIdx1 < forkIdx2 ? forks.get(forkIdx1) : forks.get(forkIdx2);
+        Fork second = forkIdx1 < forkIdx2 ? forks.get(forkIdx2) : forks.get(forkIdx1);
+
+        // Locking only the shared forks
+        first.lock();
+        second.lock();
+        userForks.put(first.getId(), first);
+        userForks.put(second.getId(), second);
         return true;
     }
 
@@ -120,19 +105,15 @@ public class Programmer extends Thread {
         // Increment the eaten portions
         this.portionsEaten++;
         // We are eating
-        Thread.sleep(1000 + rand.nextInt(500));
+        Thread.sleep(10);
     }
 
-    private void ReleaseForks(ConcurrentHashMap<Integer, Fork> forks) {
+    private void ReleaseForks() {
         // Getting forks that programmer have
-        Fork fork1 = this.userForks.get(this.forkIdx1);
-        Fork fork2 = this.userForks.get(this.forkIdx2);
-
-        // Putting back the forks
-        forks.put(fork1.getId(), fork1);
-        forks.put(fork2.getId(), fork2);
-        // Removing the forks from programmer
-        this.userForks.remove(fork1.getId());
-        this.userForks.remove(fork2.getId());
+        Fork first = userForks.remove(forkIdx1);
+        Fork second = userForks.remove(forkIdx2);
+        // Unlocking forks
+        if (first != null) first.unlock();
+        if (second != null) second.unlock();
     }
 }
