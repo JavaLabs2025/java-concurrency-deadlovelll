@@ -6,7 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -14,14 +16,14 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class ResourceGeneratorTest {
 
     private ResourceGenerator generator;
-    private ConcurrentHashMap<Integer, Fork> forks;
+    private BlockingQueue<Fork> forks;
     private ArrayList<Programmer> programmers;
     private AtomicInteger foodAmount;
 
     @BeforeEach
     public void setUp() {
         generator = new ResourceGenerator();
-        forks = new ConcurrentHashMap<>();
+        forks = new LinkedBlockingQueue<>();
         programmers = new ArrayList<>();
         foodAmount = new AtomicInteger(100);
     }

@@ -6,7 +6,7 @@ import org.example.fork.Fork;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Dinner {
@@ -15,7 +15,7 @@ public class Dinner {
     private final DinnerVerifier verifier = new DinnerVerifier();
     private final ResourceGenerator resourceGenerator = new ResourceGenerator();
     private final ArrayList<Programmer> programmers = new ArrayList<>();
-    private final ConcurrentHashMap<Integer, Fork> forks = new ConcurrentHashMap<>();
+    private final BlockingQueue<Fork> forks = new LinkedBlockingQueue<>();
     private HashMap<Integer, Integer> counts = new HashMap<>();
 
     public void serve(int programmersCount, AtomicInteger foodCount) throws InterruptedException {
@@ -24,8 +24,12 @@ public class Dinner {
         // Generating resources
         resourceGenerator.generate(programmers, forks, programmersCount, foodCount);
         // Starting dinner
-        for (Programmer p : programmers) p.start();
-        for (Programmer p : programmers) p.join();
+        ExecutorService pool = Executors.newFixedThreadPool(programmersCount);
+        for (Programmer p : programmers) {
+            pool.submit(p);
+        }
+        pool.shutdown();
+        pool.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
         System.out.println("Dinner is over!");
         System.out.println("Food amount is " + foodCount);
         // Counting stats to display
